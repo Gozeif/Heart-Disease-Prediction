@@ -295,6 +295,6 @@ summary = pd.DataFrame(results)[["Model", "Accuracy", "Precision", "Recall", "F1
 summary = summary.sort_values("F1", ascending=False).reset_index(drop=True)
 print(summary.to_string(index=False))
 
-summary.to_csv("./Working Data/model_summary.csv", index=False)
-print("\nSummary saved to ./Working Data/model_summary.csv")
-print("Confusion matrix plots saved to ./Working Data/")
+summary.to_csv("./Working Data/Summary/model_summary.csv", index=False)
+print("\nSummary saved to ./Working Data/Summary/model_summary.csv")
+print("Confusion matrix plots saved to ./Working Data/Summary/")
