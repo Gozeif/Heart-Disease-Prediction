@@ -6,21 +6,21 @@ A machine learning project that predicts the presence of heart disease from pati
 
 ```
 .
-├── 01_eda.ipynb                # Exploratory data analysis and visualizations (on raw data)
-├── 02_preprocessing.ipynb      # Cleans raw data, handles missing/garbage values, scales features
-├── 03_modeling.ipynb           # Model training, tuning, feature selection, evaluation
-├── MODELS.md                   # Contains a per-model explanation of how each algorithm works, which hyperparameters are tuned and why
-├── requirements.txt             # Python dependencies
+├── 01_eda.ipynb                       # Exploratory data analysis and visualizations (on raw data)
+├── 02_preprocessing.ipynb             # Cleans raw data, handles missing/garbage values, scales features
+├── 03_modeling.ipynb                  # Model training, tuning, feature selection, evaluation
+├── MODELS.md                          # Contains a per-model explanation of how each algorithm works, which hyperparameters are tuned and why
+├── requirements.txt                   # Python dependencies
 ├── Material/
-│   ├── train_data.csv         # Raw training data
-│   ├── test_data.csv          # Raw test data
+│   ├── train_data.csv                 # Raw training data
+│   ├── test_data.csv                  # Raw test data
 │   └── Heart Disease Prediction.pdf   # Write-up / report
 └── Data/
-    ├── Dataset/                # Preprocessed train/test splits (x_train, x_test, y_train, y_test)
-    ├── EDA/                    # Exported EDA plots (class balance, distributions, correlations, etc.)
-    ├── Models/                 # Saved trained models (.pkl)
-    ├── Summary/                # Model comparison results, confusion matrices, feature importance plots
-    └── Old Data/                # Earlier/legacy versions of the dataset
+    ├── Dataset/                       # Preprocessed train/test splits (x_train, x_test, y_train, y_test)
+    ├── EDA/                           # Exported EDA plots (class balance, distributions, correlations, etc.)
+    ├── Models/                        # Saved trained models (.pkl)
+    ├── Summary/                       # Model comparison results, confusion matrices, feature importance plots
+    └── Old Data/                      # Earlier/legacy versions of the dataset
 ```
 
 ## Pipeline
