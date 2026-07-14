@@ -9,6 +9,7 @@ A machine learning project that predicts the presence of heart disease from pati
 ├── 01_eda.ipynb                # Exploratory data analysis and visualizations (on raw data)
 ├── 02_preprocessing.ipynb      # Cleans raw data, handles missing/garbage values, scales features
 ├── 03_modeling.ipynb           # Model training, tuning, feature selection, evaluation
+├── MODELS.md                   # Contains a per-model explanation of how each algorithm works, which hyperparameters are tuned and why
 ├── requirements.txt             # Python dependencies
 ├── Material/
 │   ├── train_data.csv         # Raw training data
@@ -51,7 +52,3 @@ pip install -r requirements.txt
 ```
 
 Run the notebooks in order: `01_eda.ipynb` → `02_preprocessing.ipynb` → `03_modeling.ipynb`.
-
-## Notes
-
-- A per-model explanation of how each algorithm works and which hyperparameters are tuned (and why) has been moved to [`MODELS.md`](MODELS.md), since it documents the models rather than the project itself.
