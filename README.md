@@ -19,7 +19,7 @@ A machine learning project that predicts the presence of heart disease from pati
     ├── Dataset/                       # Preprocessed train/test splits (x_train, x_test, y_train, y_test)
     ├── EDA/                           # Exported EDA plots (class balance, distributions, correlations, etc.)
     ├── Models/                        # Saved trained models (.pkl)
-    ├── Summary/                       # Model comparison results, confusion matrices, feature importance plots
+    ├── Results/                       # Model comparison results, confusion matrices, feature importance plots
     └── Old Data/                      # Out-of-Date versions of the Report and Result Summary
 ```
 
@@ -37,15 +37,15 @@ A machine learning project that predicts the presence of heart disease from pati
 
    Every model is tried with **RFECV** (Recursive Feature Elimination with Cross-Validation) to automatically select the most informative features. RFECV needs an estimator with `feature_importances_` or `coef_` to rank features, which KNN doesn't have — so for KNN a Random Forest is used as a "scout" inside the selector to rank features, while KNN itself still makes the final predictions.
 
-   The Decision Tree is also run with an RF scout, but for a different reason: using the Decision Tree itself as the scout (`DT + RFECV`) picked features poorly and actually *hurt* performance relative to the plain Decision Tree (0.69 vs. 0.85 accuracy — see `Data/Summary/model_summary.csv`). Swapping in a Random Forest scout (`DT + RFECV with RF scout`) — whose feature rankings are more stable since they're averaged across many trees — fixed this and recovered the Decision Tree's original performance. Trained models are saved to `Data/Models/`.
+   The Decision Tree is also run with an RF scout, but for a different reason: using the Decision Tree itself as the scout (`DT + RFECV`) picked features poorly and actually *hurt* performance relative to the plain Decision Tree (0.69 vs. 0.85 accuracy — see `Data/Results/model_summary.csv`). Swapping in a Random Forest scout (`DT + RFECV with RF scout`) — whose feature rankings are more stable since they're averaged across many trees — fixed this and recovered the Decision Tree's original performance. Trained models are saved to `Data/Models/`.
 
    Note: `01_eda.ipynb` and `02_preprocessing.ipynb` don't depend on each other's code or output — both independently load the raw CSVs. The numbering reflects the conceptual order (EDA informs preprocessing decisions), not a code dependency.
 
 ## Results
 
-Models are evaluated on a held-out test set using accuracy, precision, recall, and F1 score (see `Data/Summary/model_summary.csv`). The top performer is **Random Forest**, at roughly 89% accuracy, 95% precision, and 79% recall.
+Models are evaluated on a held-out test set using accuracy, precision, recall, and F1 score (see `Data/Results/model_summary.csv`). The top performer is **Random Forest**, at roughly 89% accuracy, 95% precision, and 79% recall.
 
-Full results, confusion matrices, and feature importance breakdowns are in `Data/Summary/`.
+Full results, confusion matrices, and feature importance breakdowns are in `Data/Results/`.
 
 ## Setup
 
