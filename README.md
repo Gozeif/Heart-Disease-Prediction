@@ -20,7 +20,7 @@ A machine learning project that predicts the presence of heart disease from pati
     ├── EDA/                           # Exported EDA plots (class balance, distributions, correlations, etc.)
     ├── Models/                        # Saved trained models (.pkl)
     ├── Summary/                       # Model comparison results, confusion matrices, feature importance plots
-    └── Old Data/                      # Earlier/legacy versions of the dataset
+    └── Old Data/                      # Out-of-Date versions of the Report and Result Summary
 ```
 
 ## Pipeline
