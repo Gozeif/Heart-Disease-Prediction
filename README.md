@@ -1,126 +1,57 @@
-# Brief Model Explanations
+# Heart Disease Prediction
 
-## Logistic Regression
+A machine learning project that predicts the presence of heart disease from patient clinical data. Several classifiers are trained, tuned, and compared, with and without automated feature selection, to find the best-performing model.
 
-### How it works
+## Project structure
 
-finds a linear boundary in feature space that best separates the two classes.
-The output is a probability, which is then thresholded at 0.5 to produce a class label.
+```
+.
+├── 01_eda.ipynb                # Exploratory data analysis and visualizations (on raw data)
+├── 02_preprocessing.ipynb      # Cleans raw data, handles missing/garbage values, scales features
+├── 03_modeling.ipynb           # Model training, tuning, feature selection, evaluation
+├── requirements.txt             # Python dependencies
+├── Material/
+│   ├── train_data.csv         # Raw training data
+│   ├── test_data.csv          # Raw test data
+│   └── Heart Disease Prediction.pdf   # Write-up / report
+└── Data/
+    ├── Dataset/                # Preprocessed train/test splits (x_train, x_test, y_train, y_test)
+    ├── EDA/                    # Exported EDA plots (class balance, distributions, correlations, etc.)
+    ├── Models/                 # Saved trained models (.pkl)
+    ├── Summary/                # Model comparison results, confusion matrices, feature importance plots
+    └── Old Data/                # Earlier/legacy versions of the dataset
+```
 
-### Hyperparameters we vary
+## Pipeline
 
-#### C — the inverse of regularisation strength.
+1. **EDA** (`01_eda.ipynb`) — runs first, on the raw data. Visualizes class balance, feature distributions, outliers, correlations, and relationships between features and the target. Runs its own light, unscaled cleaning pass (independent of step 2) so plots stay in interpretable units — Age in years, Cholesterol in mg/dL — rather than z-scores. This is where the cleaning/encoding decisions used in preprocessing are informed from.
+2. **Preprocessing** (`02_preprocessing.ipynb`) — also starts from the raw data. Drops unused columns, consolidates rare categories, imputes missing values using statistics from the training set only, and scales numeric features with `StandardScaler`. Outputs the train/test splits used for modeling to `Data/Dataset/`.
+3. **Modeling** (`03_modeling.ipynb`) — trains and tunes the following classifiers via `GridSearchCV` with stratified 5-fold cross-validation, using the preprocessed data from step 2:
+   - Logistic Regression
+   - Support Vector Machine (SVM)
+   - Decision Tree
+   - Random Forest
+   - K-Nearest Neighbors (KNN)
+   - XGBoost
 
-A small C means strong regularisation,
-which shrinks coefficients toward zero and prevents overfitting.
-A large C gives the model more freedom to fit the training data.
+   Each model (excluding KNN) is also tried with **RFECV** (Recursive Feature Elimination with Cross-Validation) to automatically select the most informative features. Trained models are saved to `Data/Models/`.
 
-#### solver — the optimisation algorithm used to find the best coefficients
+   Note: `01_eda.ipynb` and `02_preprocessing.ipynb` don't depend on each other's code or output — both independently load the raw CSVs. The numbering reflects the conceptual order (EDA informs preprocessing decisions), not a code dependency.
 
-'lbfgs' and 'liblinear' are both good for small datasets like this one.
+## Results
 
-## Decision Tree
+Models are evaluated on a held-out test set using accuracy, precision, recall, and F1 score (see `Data/Summary/model_summary.csv`). The top performer is **Random Forest**, at roughly 89% accuracy, 95% precision, and 79% recall.
 
-### How it works
+Full results, confusion matrices, and feature importance breakdowns are in `Data/Summary/`.
 
-recursively splits the data on the feature/threshold that best separates the classes,
-forming a tree of if/else rules.
-Very interpretable — you can literally follow the path from root to
-leaf to understand any individual prediction.
+## Setup
 
-### Hyperparameters we vary
+```bash
+pip install -r requirements.txt
+```
 
-#### max_depth — how deep the tree is allowed to grow
+Run the notebooks in order: `01_eda.ipynb` → `02_preprocessing.ipynb` → `03_modeling.ipynb`.
 
-A shallow tree underfits (misses patterns);
-a very deep tree overfits (memorises training data).
+## Notes
 
-#### min_samples_split — the minimum number of samples a node must have before it can be split further
-
-Higher values make the tree more conservative and less likely to create splits that only explain
-one or two training examples.
-
-## Random Forest
-
-### How it works
-
-builds many decision trees, each trained on a random subset of rows (bagging)
-and a random subset of features at each split.
-The final prediction is a majority vote across all trees.
-This reduces the variance that single decision trees are prone to.
-
-### Hyperparameters we vary
-
-#### n_estimators — the number of trees in the forest
-
-More trees generally means better performance up to a point, after which returns diminish.
-More trees also means longer training time.
-
-#### max_depth — same concept as in the Decision Tree
-
-but now applied to each individual tree in the forest.
-Shallower trees mean more bias but less variance — the ensemble compensates for the bias.
-
-## XGBoost
-
-### How it works
-
-like Random Forest, XGBoost builds many trees
-but instead of building them in parallel independently,
-it builds them sequentially.
-Each new tree focuses on correcting the errors the previous trees made.
-This is called gradient boosting,
-and it tends to produce very accurate results on structured/tabular data.
-
-### Hyperparameters we vary
-
-#### n_estimators — number of boosting rounds (trees)
-
-Unlike Random Forest, more rounds can lead to
-overfitting, so this needs to be tuned carefully.
-
-#### learning_rate — how much each new tree's contribution
-
-is scaled down before being added to the ensemble.
-A lower rate means each tree contributes less,
-requiring more trees to reach the same performance
-— but typically generalises better.
-
-#### max_depth — depth of each individual tree
-
-XGBoost trees are typically kept shallow (3-6) because
-the boosting process itself adds complexity.
-
-## K-NN
-
-### How it works
-
-no training in the traditional sense.
-Instead, when predicting a new patient, KNN finds
-the k most similar patients in the training set
-(using distance in feature space) and takes a
-majority vote of their labels. It's entirely
-instance-based — the "model" is just the training
-data itself.
-
-This is the primary reason StandardScaler was applied
-in preprocessing. Without scaling, Age (range ~50)
-and Cholesterol (range ~200+) would completely
-dominate the distance calculation, drowning out
-binary features like Gender or Exercise Angina.
-Scaling puts all features on equal footing.
-
-### Hyperparameters we vary
-
-#### n_neighbors (k) — how many neighbours vote on the
-
-prediction. Small k = sensitive to noise (overfits);
-large k = smoother boundary (underfits). Finding
-the right k is the central tuning challenge in KNN.
-
-#### metric — the distance function used to measure
-
-similarity. 'euclidean' is straight-line distance.
-'manhattan' sums absolute differences dimension by
-dimension. On high-dimensional data, manhattan
-often generalises better than euclidean.
+- A per-model explanation of how each algorithm works and which hyperparameters are tuned (and why) has been moved to [`MODELS.md`](MODELS.md), since it documents the models rather than the project itself.
