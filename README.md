@@ -48,8 +48,9 @@ A machine learning project that predicts the presence of heart disease from pati
 Models are evaluated on a held-out test set using accuracy, precision, recall, and F1 score (see `Data/Results/model_summary.csv`). The top performer is **Random Forest**, tied exactly with its RFECV-selected variant `RF + RFECV` (~89% accuracy, 95% precision, 79% recall). When models tie on accuracy, the one using fewer features wins — so `RF + RFECV` (14 features) is preferred over plain Random Forest (21 features) and is the one saved to `Data/Models/RF + RFECV.pkl`.
 
 Full results, confusion matrices, and feature importance breakdowns are in `Data/Results/`. This includes:
+
 - `Data/Results/FeatureImportance/feature_importance.png` — Gini importance, showing how much each feature matters on average.
-- `Data/Results/FeatureImportance/shap_summary.png` — a **SHAP summary plot** for the best model, which additionally shows the *direction* of each feature's effect (whether a high value pushes a prediction toward "Disease" or away from it) on a per-patient basis, rather than a single averaged score.
+- `Data/Results/FeatureImportance/shap_summary.png` — a **SHAP summary plot** for the best model, which shows how influential each feature was on the model's decision along with the *direction* of each feature's effect (whether a high value pushes a prediction toward "Disease" or away from it) on a per-patient basis, rather than a single averaged score.
 
 ## Setup
 
