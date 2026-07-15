@@ -25,6 +25,8 @@ A machine learning project that predicts the presence of heart disease from pati
 
 ## Pipeline
 
+> For an explanation of how each model works and which hyperparameters are tuned (and why), see [`MODELS.md`](MODELS.md).
+
 1. **EDA** (`01_eda.ipynb`) — runs first, on the raw data. Visualizes class balance, feature distributions, outliers, correlations, and relationships between features and the target. Runs its own light, unscaled cleaning pass (independent of step 2) so plots stay in interpretable units — Age in years, Cholesterol in mg/dL — rather than z-scores. This is where the cleaning/encoding decisions used in preprocessing are informed from.
 2. **Preprocessing** (`02_preprocessing.ipynb`) — also starts from the raw data. Drops unused columns, consolidates rare categories, imputes missing values using statistics from the training set only, and scales numeric features with `StandardScaler`. Outputs the train/test splits used for modeling to `Data/Dataset/`.
 3. **Modeling** (`03_modeling.ipynb`) — trains and tunes the following classifiers via `GridSearchCV` with stratified 5-fold cross-validation, using the preprocessed data from step 2:
@@ -43,9 +45,11 @@ A machine learning project that predicts the presence of heart disease from pati
 
 ## Results
 
-Models are evaluated on a held-out test set using accuracy, precision, recall, and F1 score (see `Data/Results/model_summary.csv`). The top performer is **Random Forest**, at roughly 89% accuracy, 95% precision, and 79% recall.
+Models are evaluated on a held-out test set using accuracy, precision, recall, and F1 score (see `Data/Results/model_summary.csv`). The top performer is **Random Forest**, tied exactly with its RFECV-selected variant `RF + RFECV` (~89% accuracy, 95% precision, 79% recall). When models tie on accuracy, the one using fewer features wins — so `RF + RFECV` (14 features) is preferred over plain Random Forest (21 features) and is the one saved to `Data/Models/RF + RFECV.pkl`.
 
-Full results, confusion matrices, and feature importance breakdowns are in `Data/Results/`.
+Full results, confusion matrices, and feature importance breakdowns are in `Data/Results/`. This includes:
+- `Data/Results/FeatureImportance/feature_importance.png` — Gini importance, showing how much each feature matters on average.
+- `Data/Results/FeatureImportance/shap_summary.png` — a **SHAP summary plot** for the best model, which additionally shows the *direction* of each feature's effect (whether a high value pushes a prediction toward "Disease" or away from it) on a per-patient basis, rather than a single averaged score.
 
 ## Setup
 
