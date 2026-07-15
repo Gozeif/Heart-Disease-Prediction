@@ -4,7 +4,7 @@ A machine learning project that predicts the presence of heart disease from pati
 
 ## Project structure
 
-```
+```TEXT
 .
 ├── 01_eda.ipynb                       # Exploratory data analysis and visualizations (on raw data)
 ├── 02_preprocessing.ipynb             # Cleans raw data, handles missing/garbage values, scales features
