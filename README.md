@@ -23,6 +23,14 @@ A machine learning project that predicts the presence of heart disease from pati
     └── Old Data/                      # Out-of-Date versions of the Report and Result Summary
 ```
 
+## Setup
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the notebooks in order: `01_eda.ipynb` → `02_preprocessing.ipynb` → `03_modeling.ipynb`.
+
 ## Pipeline
 
 > For an explanation of how each model works and which hyperparameters are tuned (and why), see [`MODELS.md`](MODELS.md).
@@ -52,10 +60,3 @@ Full results, confusion matrices, and feature importance breakdowns are in `Data
 - `Data/Results/FeatureImportance/feature_importance.png` — Gini importance, showing how much each feature matters on average.
 - `Data/Results/FeatureImportance/shap_summary.png` — a **SHAP summary plot** for the best model, which shows how influential each feature was on the model's decision along with the *direction* of each feature's effect (whether a high value pushes a prediction toward "Disease" or away from it) on a per-patient basis, rather than a single averaged score.
 
-## Setup
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the notebooks in order: `01_eda.ipynb` → `02_preprocessing.ipynb` → `03_modeling.ipynb`.
